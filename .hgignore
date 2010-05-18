@@ -1,0 +1,9 @@
+(^|/)\.hg($|/)
+^\.coverage/
+^annotate
+^state$
+^state.journal$
+^.times$
+.*\.pyc$
+.*\.pyo$
+.*\~$
