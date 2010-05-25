@@ -298,13 +298,14 @@ class PackageXmlMixIn(object):
     """
     Handle registering all types for parsing package elements.
     """
+    PackageFactory = _Package
 
     def _registerTypes(self):
         """
         Setup databinder to parse xml.
         """
 
-        self._databinder.registerType(_Package, name='package')
+        self._databinder.registerType(self.PackageFactory, name='package')
         self._databinder.registerType(xmllib.StringNode, name='name')
         self._databinder.registerType(xmllib.StringNode, name='arch')
         self._databinder.registerType(xmllib.StringNode, name='checksum')

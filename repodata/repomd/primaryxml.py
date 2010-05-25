@@ -36,8 +36,6 @@ class _Metadata(SlotNode):
 
         if child.getName() != 'package':
             raise UnknownElementError(child)
-        # We're not accumulating package data here, extract it from the
-        # iterator instead
 
 class PrimaryXml(XmlStreamedParser, PackageXmlMixIn):
     """

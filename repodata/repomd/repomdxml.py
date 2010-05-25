@@ -21,6 +21,7 @@ __all__ = ('RepoMdXml', )
 # use stable api
 from rpath_xmllib import api1 as xmllib
 
+from packagexml import _Package
 from primaryxml import PrimaryXml
 from patchesxml import PatchesXml
 from filelistsxml import FileListsXml
@@ -34,6 +35,9 @@ class _RepoMd(SlotNode):
     """
 
     __slots__ = ('revision', )
+    class Package(_Package):
+        pass
+    PackageFactory = Package
 
     def addChild(self, child):
         """
@@ -53,9 +57,13 @@ class _RepoMd(SlotNode):
                 child.parseChildren = child._parser.parse
             elif child.type == 'primary':
                 child._parser = PrimaryXml(None, child.location)
+                child._parser.PackageFactory = self.PackageFactory
+                child._parser._registerTypes()
                 child.iterSubnodes = child._parser.parse
             elif child.type == 'filelists':
                 child._parser = FileListsXml(None, child.location)
+                child._parser.PackageFactory = self.PackageFactory
+                child._parser._registerTypes()
                 child.iterSubnodes = child._parser.parse
             elif child.type == 'updateinfo':
                 child._parser = UpdateInfoXml(None, child.location)
@@ -127,13 +135,14 @@ class RepoMdXml(XmlFileParser):
     """
     Handle registering all types for parsing repomd.xml file.
     """
+    RepoMdFactory = _RepoMd
 
     def _registerTypes(self):
         """
         Setup databinder to parse xml.
         """
 
-        self._databinder.registerType(_RepoMd, name='repomd')
+        self._databinder.registerType(self.RepoMdFactory, name='repomd')
         self._databinder.registerType(_RepoMdDataElement, name='data')
         self._databinder.registerType(xmllib.StringNode, name='revision')
         self._databinder.registerType(xmllib.StringNode, name='checksum')

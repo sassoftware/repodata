@@ -43,12 +43,15 @@ class Client(object):
     Client object for extracting information from repository metadata.
     """
 
+    RepositoryFactory = Repository
+    RepoMdXmlFactory = RepoMdXml
+
     def __init__(self, repoUrl):
         self._repoUrl = repoUrl
 
         self._baseMdPath = '/repodata/repomd.xml'
-        self._repo = Repository(self._repoUrl)
-        self._repomd = RepoMdXml(self._repo, self._baseMdPath).parse()
+        self._repo = self.RepositoryFactory(self._repoUrl)
+        self._repomd = self.RepoMdXmlFactory(self._repo, self._baseMdPath).parse()
 
     def getRepos(self):
         """
@@ -57,6 +60,10 @@ class Client(object):
         """
 
         return self._repo
+
+    def getPrimaryDetail(self):
+        node = self._repomd.getRepoData('primary')
+        return node
 
     def getPatchDetail(self):
         """
