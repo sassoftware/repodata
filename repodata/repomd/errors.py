@@ -29,6 +29,11 @@ class ParseError(RepoMdError):
     Base parsing error.
     """
 
+class DownloadError(RepoMdError):
+    """
+    Error downloading.
+    """
+
 class UnknownElementError(ParseError):
     """
     Raised when unhandled elements are found in the parser.

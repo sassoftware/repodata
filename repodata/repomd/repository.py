@@ -20,9 +20,12 @@ __all__ = ('Repository', )
 
 import os
 import gzip
-import shutil
+import sys
 import tempfile
 import urllib2
+
+from repodata.repomd import errors
+from conary.lib import digestlib, util
 
 class Repository(object):
     """
@@ -32,7 +35,7 @@ class Repository(object):
     def __init__(self, repoUrl):
         self._repoUrl = repoUrl
 
-    def get(self, fileName):
+    def get(self, fileName, computeShaDigest = False):
         """
         Download a file from the repository.
         @param fileName: relative path to file
@@ -40,28 +43,33 @@ class Repository(object):
         @return open file instance
         """
 
-        fn = self._getTempFile()
+        fobj = self._getTempFileObject()
         realUrl = self._getRealUrl(fileName)
 
-        inf = urllib2.urlopen(realUrl)
-        outf = open(fn, 'w')
-        shutil.copyfileobj(inf, outf)
-
-        if os.path.basename(fileName).endswith('.gz'):
-            fh = gzip.open(fn)
+        try:
+            inf = urllib2.urlopen(realUrl)
+        except urllib2.URLError, e:
+            raise errors.DownloadError(e), None, sys.exc_info()[2]
+        if computeShaDigest:
+            dig = digestlib.sha1()
         else:
-            fh = open(fn)
-        os.unlink(fn)
-        return fh
+            dig = None
+        util.copyfileobj(inf, fobj, digest = dig)
+        fobj.seek(0)
+
+        if not os.path.basename(fileName).endswith('.gz'):
+            return self.FileWrapper.create(fobj, dig)
+        return self.FileWrapper.create(gzip.GzipFile(fileobj=fobj, mode="r"),
+            dig)
 
     @classmethod
-    def _getTempFile(cls):
+    def _getTempFileObject(cls):
         """
-        Generate a tempory filename.
-        @return name of tempory file
+        Generate a tempory file object.
+        @return file object
         """
 
-        return tempfile.mktemp(prefix='mdparse')
+        return tempfile.TemporaryFile(prefix='mdparse')
 
     def _getRealUrl(self, path):
         """
@@ -71,3 +79,28 @@ class Repository(object):
         """
 
         return self._repoUrl + '/' + path
+
+    class FileWrapper(object):
+        __slots__ = [ 'file', 'sha1sum' ]
+
+        def __init__(self, file, sha1sum):
+            self.file = file
+            self.sha1sum = sha1sum
+
+        def read(self, size=-1):
+            return self.file.read(size=size)
+
+        def seek(self, offset, whence=0):
+            return self.file.seek(offset, whence)
+
+        def tell(self):
+            return self.file.tell()
+
+        def close(self):
+            return self.file.close()
+
+        @classmethod
+        def create(cls, file, digestobj):
+            if digestobj is None:
+                return file
+            return cls(file, digestobj.hexdigest())

@@ -34,9 +34,10 @@ Example:
 
 from repomdxml import RepoMdXml
 from repository import Repository
-from errors import RepoMdError, ParseError, UnknownElementError
+from errors import RepoMdError, ParseError, UnknownElementError, DownloadError
 
-__all__ = ('Client', 'RepoMdError', 'ParseError', 'UnknownElementError')
+__all__ = ('Client', 'RepoMdError', 'ParseError', 'UnknownElementError',
+    'DownloadError')
 
 class Client(object):
     """
@@ -52,6 +53,13 @@ class Client(object):
         self._baseMdPath = '/repodata/repomd.xml'
         self._repo = self.RepositoryFactory(self._repoUrl)
         self._repomd = self.RepoMdXmlFactory(self._repo, self._baseMdPath).parse()
+
+    def download(self, relativePath, computeShaDigest=False):
+        """
+        Download a file from the repository.
+        @return file object
+        """
+        return self._repo.get(relativePath, computeShaDigest=computeShaDigest)
 
     def getRepos(self):
         """
