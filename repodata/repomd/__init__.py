@@ -34,6 +34,7 @@ Example:
 
 from repomdxml import RepoMdXml
 from repository import Repository
+# pyflakes=ignore
 from errors import RepoMdError, ParseError, UnknownElementError, DownloadError
 
 __all__ = ('Client', 'RepoMdError', 'ParseError', 'UnknownElementError',
