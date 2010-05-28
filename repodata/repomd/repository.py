@@ -48,7 +48,7 @@ class Repository(object):
 
         try:
             inf = urllib2.urlopen(realUrl)
-        except urllib2.URLError, e:
+        except (urllib2.URLError, OSError), e:
             raise errors.DownloadError(e), None, sys.exc_info()[2]
         if computeShaDigest:
             dig = digestlib.sha1()
