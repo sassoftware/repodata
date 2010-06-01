@@ -26,15 +26,12 @@ class URLOpener(transport.URLOpener):
         raise TransportError("Unable to open %s: %s" % (url, errmsg),
             msg = errmsg, code = errcode, headers = headers, url = url)
 
-    def open(self, url, extraHeaders=None):
+    def open(self, url, data=None):
         timer = transport.BackoffTimer()
-        extraHeaders = extraHeaders or {}
-        for k, v in extraHeaders.items():
-            opener.addheader(k, str(v))
 
         for i in range(self.RETRIES_ON_ERROR):
             try:
-                return transport.URLOpener.open(self, url)
+                return transport.URLOpener.open(self, url, data=data)
             except TransportError, e:
                 # If the error is in a specific set, there's no need to retry
                 if e.code in self.FATAL_ERRORS:
