@@ -85,7 +85,11 @@ class Client(object):
         if node is None:
             return []
 
-        return [ x.parseChildren() for x in node.parseChildren().getPatches() ]
+        ret = []
+        for sn in node.iterSubnodes():
+            sn._parser._repository = self._repo
+            ret.append(sn.parseChildren())
+        return ret
 
     def getPackageDetail(self):
         """

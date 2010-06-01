@@ -150,7 +150,13 @@ class PatchXml(XmlFileParser, PackageXmlMixIn):
         Setup databinder to parse xml.
         """
 
+        class _Package(self.PackageFactory):
+            # The base package has no type
+            __slots__ = ('type', )
+
+
         PackageXmlMixIn._registerTypes(self)
+        self._databinder.registerType(_Package, name='package')
         self._databinder.registerType(_Patch, name='patch')
         self._databinder.registerType(xmllib.StringNode, name='name',
                                       namespace='yum')

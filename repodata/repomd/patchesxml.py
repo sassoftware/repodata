@@ -22,45 +22,21 @@ __all__ = ('PatchesXml', )
 from rpath_xmllib import api1 as xmllib
 
 from patchxml import PatchXml
-from xmlcommon import XmlFileParser, SlotNode
+from xmlcommon import XmlStreamedParser, SlotNode
 from errors import UnknownElementError
 
 class _Patches(SlotNode):
     """
     Python representation of patches.xml from the repository metadata.
     """
-
     __slots__ = ()
-
-    def addChild(self, child):
-        """
-        Parse children of patches element.
-        """
-
-        # W0212 - Access to a protected member _parser of a client class
-        # pylint: disable-msg=W0212
-
-        if child.getName() != 'patch':
-            raise UnknownElementError(child)
-        child.id = child.getAttribute('id')
-        child._parser = PatchXml(None, child.location)
-        child.parseChildren = child._parser.parse
-        SlotNode.addChild(self, child)
-
-    def getPatches(self):
-        """
-        Get a list of all patches in the repository.
-        @return list of _PatchElement instances
-        """
-
-        return self.getChildren('patch')
-
 
 class _PatchElement(SlotNode):
     """
     Parser for patch element of patches.xml.
     """
 
+    WillYield = True
     __slots__ = ('id', 'checksum', 'checksumType', 'location', '_parser',
         'parseChildren')
 
@@ -82,7 +58,12 @@ class _PatchElement(SlotNode):
         else:
             raise UnknownElementError(child)
 
-class PatchesXml(XmlFileParser):
+    def finalize(self):
+        self._parser = PatchXml(None, self.location)
+        self.parseChildren = self._parser.parse
+        return self
+
+class PatchesXml(XmlStreamedParser):
     """
     Handle registering all types for parsing patches.xml.
     """

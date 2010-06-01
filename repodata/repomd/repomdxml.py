@@ -54,7 +54,7 @@ class _RepoMd(SlotNode):
             child.type = child.getAttribute('type')
             if child.type == 'patches':
                 child._parser = PatchesXml(None, child.location)
-                child.parseChildren = child._parser.parse
+                child.iterSubnodes = child._parser.parse
             elif child.type == 'primary':
                 child._parser = PrimaryXml(None, child.location)
                 child._parser.PackageFactory = self.PackageFactory
