@@ -22,7 +22,6 @@ import os
 import gzip
 import sys
 import tempfile
-import urllib2
 
 from repodata import urlopener
 
