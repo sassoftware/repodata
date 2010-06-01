@@ -48,11 +48,11 @@ class Client(object):
     RepositoryFactory = Repository
     RepoMdXmlFactory = RepoMdXml
 
-    def __init__(self, repoUrl):
+    def __init__(self, repoUrl, proxies=None):
         self._repoUrl = repoUrl
 
         self._baseMdPath = '/repodata/repomd.xml'
-        self._repo = self.RepositoryFactory(self._repoUrl)
+        self._repo = self.RepositoryFactory(self._repoUrl, proxies)
         self._repomd = self.RepoMdXmlFactory(self._repo, self._baseMdPath).parse()
 
     def download(self, relativePath, computeShaDigest=False):

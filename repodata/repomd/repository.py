@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2008-2009 rPath, Inc.
+# Copyright (c) 2010 rPath, Inc.
 #
 # This program is distributed under the terms of the Common Public License,
 # version 1.0. A copy of this license should have been distributed with this
@@ -24,6 +24,8 @@ import sys
 import tempfile
 import urllib2
 
+from repodata import urlopener
+
 from repodata.repomd import errors
 from conary.lib import digestlib, util
 
@@ -31,9 +33,13 @@ class Repository(object):
     """
     Access files from the repository.
     """
+    URLOpenerFactory = urlopener.URLOpener
+    TransportError = urlopener.TransportError
 
-    def __init__(self, repoUrl):
+    def __init__(self, repoUrl, proxies=None):
         self._repoUrl = repoUrl
+        self._proxies = proxies
+        self._opener = self.URLOpenerFactory(self._proxies)
 
     def get(self, fileName, computeShaDigest = False):
         """
@@ -47,10 +53,8 @@ class Repository(object):
         realUrl = self._getRealUrl(fileName)
 
         try:
-            inf = urllib2.urlopen(realUrl)
-        except urllib2.URLError, e:
-            raise errors.DownloadError(e.reason), None, sys.exc_info()[2]
-        except OSError, e:
+            inf = self._opener.open(realUrl)
+        except self.TransportError, e:
             raise errors.DownloadError(e), None, sys.exc_info()[2]
         if computeShaDigest:
             dig = digestlib.sha1()
