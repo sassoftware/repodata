@@ -16,7 +16,7 @@
 Repository access module.
 """
 
-__all__ = ('Repository', )
+__all__ = ('Repository',  )
 
 import os
 import gzip
@@ -33,10 +33,10 @@ class Repository(object):
     Access files from the repository.
     """
     URLOpenerFactory = urlopener.URLOpener
-    TransportError = urlopener.TransportError
+    TransportError = urlopener.errors.TransportError
 
     def __init__(self, repoUrl, proxies=None):
-        self._repoUrl = repoUrl
+        self._repoUrl = repoUrl.rstrip('/')
         self._proxies = proxies
         self._opener = self.URLOpenerFactory(self._proxies)
 
@@ -51,10 +51,7 @@ class Repository(object):
         fobj = self._getTempFileObject()
         realUrl = self._getRealUrl(fileName)
 
-        try:
-            inf = self._opener.open(realUrl)
-        except self.TransportError, e:
-            raise errors.DownloadError(e), None, sys.exc_info()[2]
+        inf = self._opener.open(realUrl)
         if computeShaDigest:
             dig = digestlib.sha1()
         else:
@@ -83,7 +80,7 @@ class Repository(object):
         @return full repository url
         """
 
-        return self._repoUrl + '/' + path
+        return "%s/%s" % (self._repoUrl, path.lstrip('/'))
 
     class FileWrapper(object):
         __slots__ = [ 'file', 'sha1sum' ]

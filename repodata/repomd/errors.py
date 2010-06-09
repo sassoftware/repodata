@@ -16,9 +16,12 @@
 Errors specific to repomd module.
 """
 
-__all__ = ('RepoMdError', 'ParseError', 'UnknownElementError')
+__all__ = ('RepoMdError', 'ParseError', 'UnknownElementError', 'DownloadError')
 
-class RepoMdError(Exception):
+from repodata import errors
+DownloadError = errors.DownloadError
+
+class RepoMdError(errors.RepositoryError):
     """
     Base exception for all repomd exceptions. This should never be
     expllicitly raised.
@@ -27,11 +30,6 @@ class RepoMdError(Exception):
 class ParseError(RepoMdError):
     """
     Base parsing error.
-    """
-
-class DownloadError(RepoMdError):
-    """
-    Error downloading.
     """
 
 class UnknownElementError(ParseError):

@@ -19,6 +19,9 @@ from conary.repository import transport
 
 log = logging.getLogger(__name__)
 
+from repodata import errors
+TransportError = errors.TransportError
+
 class URLOpener(transport.URLOpener):
     RETRIES_ON_ERROR = 20
     FATAL_ERRORS = set([ 404 ])
@@ -43,10 +46,13 @@ class URLOpener(transport.URLOpener):
                 if e.args[0] == 'socket error':
                     timer.sleep()
                     continue
+                if e.args[0] == 'http error':
+                    code, msg = e.args[1:3]
+                else:
+                    code, msg = e.args[0:2]
                 raise TransportError(
-                    "Unable to download: %s: %s" % (e.args[0], e.args[1]),
-                    code=e.args[0], msg=e.args[1],
-                    url = url), None, sys.exc_info()[2]
+                    "Unable to download: %s: %s" % (code, msg),
+                    code=code, msg=msg, url = url), None, sys.exc_info()[2]
         exc_info = sys.exc_info()
         if isinstance(e, IOError):
             raise TransportError("Unable to download: %s" % e), None, exc_info[2]
@@ -61,17 +67,3 @@ class Transport(transport.Transport):
     def request(self, *args, **kwargs):
         ret = transport.Transport.request(self, *args, **kwargs)
         return ret[0][1]
-
-class DownloadError(Exception):
-    "Error downloading content"
-    def __init__(self, text, code = None, msg = None):
-        Exception.__init__(self, text)
-        self.code = code
-        self.msg = msg
-
-class TransportError(DownloadError):
-    def __init__(self, text, code = None, msg = None, url = None,
-                 headers = None):
-        DownloadError.__init__(self, text, code = code, msg = msg)
-        self.headers = headers
-        self.url = url
