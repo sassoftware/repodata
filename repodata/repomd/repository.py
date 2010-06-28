@@ -90,7 +90,7 @@ class Repository(object):
             self.sha1sum = sha1sum
 
         def read(self, size=-1):
-            return self.file.read(size=size)
+            return self.file.read(size)
 
         def seek(self, offset, whence=0):
             return self.file.seek(offset, whence)
