@@ -53,7 +53,13 @@ class Client(object):
 
         self._baseMdPath = '/repodata/repomd.xml'
         self._repo = self.RepositoryFactory(self._repoUrl, proxies)
-        self._repomd = self.RepoMdXmlFactory(self._repo, self._baseMdPath).parse()
+        self._repomdXml = None
+
+    @property
+    def repomdXml(self):
+        if self._repomdXml is None:
+            self._repomdXml = self.RepoMdXmlFactory(self._repo, self._baseMdPath).parse()
+        return self._repomdXml
 
     def download(self, relativePath, computeShaDigest=False):
         """
@@ -71,7 +77,7 @@ class Client(object):
         return self._repo
 
     def getPrimaryDetail(self):
-        node = self._repomd.getRepoData('primary')
+        node = self.repomdXml.getRepoData('primary')
         return node
 
     def getPatchDetail(self):
@@ -80,7 +86,7 @@ class Client(object):
         @return [repomd.patchxml._Patch, ...]
         """
 
-        node = self._repomd.getRepoData('patches')
+        node = self.repomdXml.getRepoData('patches')
 
         if node is None:
             return []
@@ -97,7 +103,7 @@ class Client(object):
         @ return [repomd.packagexml._Package, ...]
         """
 
-        node = self._repomd.getRepoData('primary')
+        node = self.repomdXml.getRepoData('primary')
         return node.iterSubnodes()
 
     def getFileLists(self):
@@ -105,7 +111,7 @@ class Client(object):
         Get a list instances representing filelists in the repository.
         @ return [repomd.filelistsxml._Package, ...]
         """
-        node = self._repomd.getRepoData('filelists')
+        node = self.repomdXml.getRepoData('filelists')
         return node.iterSubnodes()
 
     def getUpdateInfo(self):
@@ -115,7 +121,7 @@ class Client(object):
         @return [ repomd.userinfoxml._Update ]
         """
 
-        node = self._repomd.getRepoData('updateinfo')
+        node = self.repomdXml.getRepoData('updateinfo')
 
         if not node:
             return []
