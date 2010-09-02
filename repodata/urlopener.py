@@ -16,7 +16,6 @@ import logging
 import sys
 
 from conary.repository import transport
-from conary.lib import httputils
 
 log = logging.getLogger(__name__)
 
@@ -31,7 +30,7 @@ class URLOpener(transport.URLOpener):
             msg = errmsg, code = errcode, headers = headers, url = url)
 
     def open(self, url, data=None):
-        timer = httputils.BackoffTimer()
+        timer = transport.BackoffTimer()
 
         for i in range(self.RETRIES_ON_ERROR):
             try:
