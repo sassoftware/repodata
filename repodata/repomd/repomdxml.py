@@ -69,8 +69,13 @@ class _RepoMd(SlotNode):
                 child._parser = UpdateInfoXml(None, child.location)
                 child.iterSubnodes = child._parser.parse
             SlotNode.addChild(self, child)
+        elif name == 'tags':
+            # I know this tag exists, but don't care about it for now. - AG
+            pass
         else:
-            raise UnknownElementError(child)
+            # raise UnknownElementError(child)
+            # I don't want this to fail. - AG
+            pass
 
     def getRepoData(self, name=None):
         """
