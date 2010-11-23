@@ -23,7 +23,10 @@ from repodata import errors
 TransportError = errors.TransportError
 
 class URLOpener(transport.URLOpener):
-    RETRIES_ON_ERROR = 20
+    # Be careful when changing these constants. The exponential backoff will
+    # make the sleep times go up really fast. RBL-7871 for details
+    RETRIES_ON_ERROR = 6
+    BACKOFF_FACTOR = 1.8
     FATAL_ERRORS = set([ 404 ])
     def http_error_default(self, url, fp, errcode, errmsg, headers, data=None):
         raise TransportError("Unable to open %s: %s" % (url, errmsg),
@@ -31,6 +34,7 @@ class URLOpener(transport.URLOpener):
 
     def open(self, url, data=None):
         timer = transport.BackoffTimer()
+        timer.factor = self.BACKOFF_FACTOR
 
         for i in range(self.RETRIES_ON_ERROR):
             try:
@@ -39,7 +43,8 @@ class URLOpener(transport.URLOpener):
                 # If the error is in a specific set, there's no need to retry
                 if e.code in self.FATAL_ERRORS:
                     raise
-                log.debug("Error: %s; retrying", e)
+                log.error("Error: %s; retrying after %.3f seconds", e,
+                    timer.delay)
                 timer.sleep()
             except IOError, e:
                 # From conary.repository.transport
