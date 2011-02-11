@@ -37,7 +37,7 @@ class _Updates(SlotNode):
         """
 
         if child.getName() != 'update':
-            raise UnknownElement(child)
+            raise UnknownElementError(child)
 
     def getUpdateInfo(self):
         """
@@ -152,7 +152,7 @@ class _Collection(SlotNode):
         """
 
         if child.getName() != 'package':
-            raise UnknownElement(child)
+            raise UnknownElementError(child)
 
         child.name = None
         child.arch = None
