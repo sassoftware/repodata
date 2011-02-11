@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2010 rPath, Inc.
+# Copyright (c) 2011 rPath, Inc.
 #
 # This program is distributed under the terms of the Common Public License,
 # version 1.0. A copy of this license should have been distributed with this
@@ -13,55 +13,52 @@
 #
 
 import logging
+import socket
 import sys
 
+from conary.lib import timeutil
+from conary.lib.http import http_error
+from conary.lib.http import opener
 from conary.repository import transport
 
 log = logging.getLogger(__name__)
 
-from repodata import errors
-TransportError = errors.TransportError
 
-class URLOpener(transport.URLOpener):
+class URLOpener(opener.URLOpener):
     # Be careful when changing these constants. The exponential backoff will
     # make the sleep times go up really fast. RBL-7871 for details
     RETRIES_ON_ERROR = 6
     BACKOFF_FACTOR = 1.8
     FATAL_ERRORS = set([ 404 ])
-    def http_error_default(self, url, fp, errcode, errmsg, headers, data=None):
-        raise TransportError("Unable to open %s: %s" % (url, errmsg),
-            msg = errmsg, code = errcode, headers = headers, url = url)
+    FATAL_SOCKET_ERRORS = set([ socket.EAI_NONAME ])
 
-    def open(self, url, data=None):
-        timer = transport.BackoffTimer()
+    def open(self, url, data=None, headers=()):
+        timer = timeutil.BackoffTimer()
         timer.factor = self.BACKOFF_FACTOR
+        # TODO: push down retry logic to conary
 
         for i in range(self.RETRIES_ON_ERROR):
             try:
-                return transport.URLOpener.open(self, url, data=data)
-            except TransportError, e:
+                return opener.URLOpener.open(self, url, data=data,
+                        headers=headers)
+            except http_error.TransportError, e:
                 # If the error is in a specific set, there's no need to retry
-                if e.code in self.FATAL_ERRORS:
+                if e.errcode in self.FATAL_ERRORS:
                     raise
                 log.error("Error: %s; retrying after %.3f seconds", e,
                     timer.delay)
                 timer.sleep()
-            except IOError, e:
-                # From conary.repository.transport
-                if e.args[0] == 'socket error':
-                    timer.sleep()
-                    continue
-                if e.args[0] == 'http error':
-                    code, msg = e.args[1:3]
-                else:
-                    code, msg = e.args[0:2]
-                raise TransportError(
-                    "Unable to download: %s: %s" % (code, msg),
-                    code=code, msg=msg, url = url), None, sys.exc_info()[2]
+            except IOError, err:
+                if err.args[0] in self.FATAL_SOCKET_ERRORS:
+                    raise
+                timer.sleep()
+
         exc_info = sys.exc_info()
+        e = exc_info[1]
         if isinstance(e, IOError):
-            raise TransportError("Unable to download: %s" % e), None, exc_info[2]
+            raise http_error.TransportError("Unable to download: %s" % e), None, exc_info[2]
         raise exc_info[0], exc_info[1], exc_info[2]
+
 
 class Transport(transport.Transport):
     def parse_response(self, file):

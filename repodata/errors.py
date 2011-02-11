@@ -16,24 +16,13 @@
 Errors specific to repomd module.
 """
 
-__all__ = ('RepositoryError', 'DownloadError')
+from conary.lib.http import http_error
+
+__all__ = ('RepositoryError', 'TransportError')
+TransportError = http_error.TransportError
 
 class RepositoryError(Exception):
     """
     Base exception for all repomd exceptions. This should never be
     expllicitly raised.
     """
-
-class DownloadError(RepositoryError):
-    "Error downloading content"
-    def __init__(self, text, code = None, msg = None):
-        RepositoryError.__init__(self, text)
-        self.code = code
-        self.msg = msg
-
-class TransportError(DownloadError):
-    def __init__(self, text, code = None, msg = None, url = None,
-                 headers = None):
-        DownloadError.__init__(self, text, code = code, msg = msg)
-        self.headers = headers
-        self.url = url

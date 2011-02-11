@@ -20,25 +20,24 @@ __all__ = ('Repository',  )
 
 import os
 import gzip
-import sys
 import tempfile
 
 from repodata import urlopener
 
-from repodata.repomd import errors
 from conary.lib import digestlib, util
+from conary.lib.http import http_error
 
 class Repository(object):
     """
     Access files from the repository.
     """
     URLOpenerFactory = urlopener.URLOpener
-    TransportError = urlopener.errors.TransportError
+    TransportError = http_error.TransportError
 
-    def __init__(self, repoUrl, proxies=None):
+    def __init__(self, repoUrl, proxyMap=None):
         self._repoUrl = repoUrl.rstrip('/')
-        self._proxies = proxies
-        self._opener = self.URLOpenerFactory(self._proxies)
+        self._proxyMap = proxyMap
+        self._opener = self.URLOpenerFactory(proxyMap=self._proxyMap)
 
     def get(self, fileName, computeShaDigest = False):
         """

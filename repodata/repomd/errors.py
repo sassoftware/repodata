@@ -16,10 +16,9 @@
 Errors specific to repomd module.
 """
 
-__all__ = ('RepoMdError', 'ParseError', 'UnknownElementError', 'DownloadError')
+__all__ = ('RepoMdError', 'ParseError', 'UnknownElementError')
 
 from repodata import errors
-DownloadError = errors.DownloadError
 
 class RepoMdError(errors.RepositoryError):
     """

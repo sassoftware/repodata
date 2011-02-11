@@ -35,10 +35,9 @@ Example:
 from repomdxml import RepoMdXml
 from repository import Repository
 # pyflakes=ignore
-from errors import RepoMdError, ParseError, UnknownElementError, DownloadError
+from errors import RepoMdError, ParseError, UnknownElementError
 
-__all__ = ('Client', 'RepoMdError', 'ParseError', 'UnknownElementError',
-    'DownloadError')
+__all__ = ('Client', 'RepoMdError', 'ParseError', 'UnknownElementError')
 
 class Client(object):
     """
@@ -48,11 +47,11 @@ class Client(object):
     RepositoryFactory = Repository
     RepoMdXmlFactory = RepoMdXml
 
-    def __init__(self, repoUrl, proxies=None):
+    def __init__(self, repoUrl, proxyMap=None):
         self._repoUrl = repoUrl
 
         self._baseMdPath = '/repodata/repomd.xml'
-        self._repo = self.RepositoryFactory(self._repoUrl, proxies)
+        self._repo = self.RepositoryFactory(self._repoUrl, proxyMap)
         self._repomdXml = None
 
     @property
