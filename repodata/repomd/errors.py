@@ -20,6 +20,9 @@ __all__ = ('RepoMdError', 'ParseError', 'UnknownElementError')
 
 from repodata import errors
 
+DownloadError = errors.TransportError
+
+
 class RepoMdError(errors.RepositoryError):
     """
     Base exception for all repomd exceptions. This should never be

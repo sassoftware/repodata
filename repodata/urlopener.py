@@ -23,6 +23,8 @@ from conary.repository import transport
 
 log = logging.getLogger(__name__)
 
+TransportError = http_error.TransportError
+
 
 class URLOpener(opener.URLOpener):
     # Be careful when changing these constants. The exponential backoff will
