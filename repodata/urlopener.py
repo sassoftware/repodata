@@ -63,11 +63,7 @@ class URLOpener(opener.URLOpener):
 
 
 class Transport(transport.Transport):
-    def parse_response(self, file):
-        # Conary's transport assumes the response is a list inside a tuple
-        ret = transport.Transport.parse_response(self, file)
-        return ([ ret ], )
 
     def request(self, *args, **kwargs):
         ret = transport.Transport.request(self, *args, **kwargs)
-        return ret[0][1]
+        return ret[0]
