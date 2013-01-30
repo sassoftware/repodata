@@ -15,21 +15,23 @@
 #
 
 
-SUBDIRS = repomd
+loadSuperClass('testpackage')
+class repodataTest(TestPackageRecipe):
+    name = 'repodata-test'
+    version = ''
 
-python_files =  $(wildcard *.py)
+    # Location of testsuite.py used by the superclass
+    testDir = '.'
 
-dist_files = Makefile $(python_files)
+    buildRequires = [
+        'repodata:python',
+        'rpath-xmllib:python',
+    ]
 
-all: default-all subdirs
+    def setupSource(r):
+        r.addMercurialSnapshot()
 
-install: all pyfiles-install default-install pyfiles-compile install-subdirs
-
-subdirs: default-subdirs
-
-dist: default-dist
-
-clean: default-clean clean-subdirs
-
-include ../Make.rules
-include ../Make.defs
+    def install(r):
+        r.macros.sitepkg = '%(libdir)s/python%(pyver)s/site-packages'
+        r.MakeDirs('%(sitepkg)s')
+        r.Run('cp -a repodata_test %(destdir)s%(sitepkg)s/repodata_test')

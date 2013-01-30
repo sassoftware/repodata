@@ -15,21 +15,17 @@
 #
 
 
-SUBDIRS = repomd
+class Repodata(PackageRecipe):
+    name = 'repodata'
+    version = ''
 
-python_files =  $(wildcard *.py)
+    buildRequires = [
+        'make:runtime',
+        'python:devel',
+        'util-linux:runtime', # Needed by arch (in Make.defs)
+        'rpath-xmllib:python',
+    ]
 
-dist_files = Makefile $(python_files)
-
-all: default-all subdirs
-
-install: all pyfiles-install default-install pyfiles-compile install-subdirs
-
-subdirs: default-subdirs
-
-dist: default-dist
-
-clean: default-clean clean-subdirs
-
-include ../Make.rules
-include ../Make.defs
+    def setup(r):
+        r.addMercurialSnapshot()
+        r.MakeInstall()

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<repomd>
+  <data type="updateinfo">
+    <location href="repodata/updateinfo.xml.gz"/>
+    <checksum type="sha">819e1f3d9bc0263dcfe5942e002cb8364f8aa009</checksum>
+    <timestamp>1274094591</timestamp>
+    <open-checksum type="sha">819e1f3d9bc0263dcfe5942e002cb8364f8aa009</open-checksum>
+  </data>
+  <data type="filelists">
+    <location href="repodata/filelists.xml.gz"/>
+    <checksum type="sha">a0654e3e66cad0b5917d3b351e34c8b28d971a4d</checksum>
+    <timestamp>1274094577</timestamp>
+    <open-checksum type="sha">e456d3579ab6768fc0bdbf89a10067bc22c71bcf</open-checksum>
+  </data>
+  <data type="primary">
+    <location href="repodata/primary.xml.gz"/>
+    <checksum type="sha">6b5cb12e54b9262f230726db3652b1ef7f7de7da</checksum>
+    <timestamp>1274094576</timestamp>
+    <open-checksum type="sha">58054de582d97729423fb38c72c9e2c8ee8b2c4d</open-checksum>
+  </data>
+  <data type="patches">
+    <location href="repodata/patches.xml"/>
+    <checksum type="sha">3a9756ee879a3a178fe6daa9a467d52e60efdaf0</checksum>
+    <timestamp>1274121816</timestamp>
+    <open-checksum type="sha">3a9756ee879a3a178fe6daa9a467d52e60efdaf0</open-checksum>
+  </data>
+</repomd>

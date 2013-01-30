@@ -15,21 +15,22 @@
 #
 
 
-SUBDIRS = repomd
+import os
 
-python_files =  $(wildcard *.py)
 
-dist_files = Makefile $(python_files)
+def get_path(*subpath):
+    return os.path.join(_test_root, *subpath)
 
-all: default-all subdirs
 
-install: all pyfiles-install default-install pyfiles-compile install-subdirs
+def get_archive(*subpath):
+    return get_path('repodata_test', 'archive', *subpath)
 
-subdirs: default-subdirs
 
-dist: default-dist
-
-clean: default-clean clean-subdirs
-
-include ../Make.rules
-include ../Make.defs
+def _get_test_root():
+    modname = __name__.split('.')
+    modroot = os.path.abspath(__file__)
+    while modname:
+        modroot = os.path.dirname(modroot)
+        modname.pop()
+    return modroot
+_test_root = _get_test_root()

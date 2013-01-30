@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--PATCHINFO id="815da4ee2f994d50a5ffca6b22104062"!-->
+<patch
+    xmlns="http://novell.com/package/metadata/suse/patch"
+    xmlns:yum="http://linux.duke.edu/metadata/common"
+    xmlns:rpm="http://linux.duke.edu/metadata/rpm"
+    xmlns:suse="http://novell.com/package/metadata/suse/common"
+    patchid="sdkp3-heartbeat-6520"
+    timestamp="1254756304"
+    engine="1.0">
+  <yum:name>sdkp3-heartbeat</yum:name>
+  <summary lang="en">Recommended update for heartbeat</summary>
+  <summary lang="de">Recommended update for heartbeat</summary>
+  <description lang="en">This update for heartbeat consolidates fixes and fixes the
+regressions introduced in the previously issued heartbeat
+update.
+
+In detail:
+
+- /etc/init.d/heartbeat: Do not print sbd error message
+  during reload (bnc#529666).
+- sfex: Include binary and RA (bnc#529974).
+- stonith: external/riloe: make sure that the host has
+  power after hold_button (bnc#462849).
+- sbd: Respect all commandline options (bnc#476053).
+- PE: fix collocation with node_attribute (bnc#466788).
+- send_arp: make ip conversion work on big endian platforms
+  (bnc#512896).
+- PE/TE: handle shutdown escalation correctly (bnc#490426).
+- High: mgmtd: Let mgmtd r/w the consistent cib
+  (bnc#539557).
+- Med: GUI: Adopt the consistent naming policy of
+  &quot;meta_attributes&quot; id with crm_resource for GUI
+  (bnc#498805, bnc#539621)
+- High: PE: Mask the &quot;symmetrical&quot; attribute on
+  rsc_colocation constraints (bnc#540672)
+
+- Med: stonith: wti_nps: add support for internet power
+  switch model (bnc#539912)
+</description>
+  <description lang="de">This update for heartbeat consolidates fixes and fixes the
+regressions introduced in the previously issued heartbeat
+update.
+
+In detail:
+
+- /etc/init.d/heartbeat: Do not print sbd error message
+  during reload (bnc#529666).
+- sfex: Include binary and RA (bnc#529974).
+- stonith: external/riloe: make sure that the host has
+  power after hold_button (bnc#462849).
+- sbd: Respect all commandline options (bnc#476053).
+- PE: fix collocation with node_attribute (bnc#466788).
+- send_arp: make ip conversion work on big endian platforms
+  (bnc#512896).
+- PE/TE: handle shutdown escalation correctly (bnc#490426).
+- High: mgmtd: Let mgmtd r/w the consistent cib
+  (bnc#539557).
+- Med: GUI: Adopt the consistent naming policy of
+  &quot;meta_attributes&quot; id with crm_resource for GUI
+  (bnc#498805, bnc#539621)
+- High: PE: Mask the &quot;symmetrical&quot; attribute on
+  rsc_colocation constraints (bnc#540672)
+
+- Med: stonith: wti_nps: add support for internet power
+  switch model (bnc#539912)
+</description>
+  <yum:version ver="6520" rel="0"/>
+  <rpm:requires>
+    <rpm:entry kind="atom" name="heartbeat" epoch="0" ver="2.1.4" rel="0.16.2" flags="EQ"/>
+    <rpm:entry kind="atom" name="heartbeat-cmpi" epoch="0" ver="2.1.4" rel="0.16.2" flags="EQ"/>
+    <rpm:entry kind="atom" name="heartbeat-ldirectord" epoch="0" ver="2.1.4" rel="0.16.2" flags="EQ"/>
+    <rpm:entry kind="atom" name="heartbeat-pils" epoch="0" ver="2.1.4" rel="0.16.2" flags="EQ"/>
+    <rpm:entry kind="atom" name="heartbeat-stonith" epoch="0" ver="2.1.4" rel="0.16.2" flags="EQ"/>
+  </rpm:requires>
+  <category>recommended</category>
+  <atoms>
+    <package xmlns="http://linux.duke.edu/metadata/common" type="rpm">
+      <name>heartbeat</name>
+      <arch>i586</arch>
+      <version epoch="0" ver="2.1.4" rel="0.16.2"/>
+      <checksum type="sha" pkgid="YES">c6d7ed73f9f35fac7ce9d5c695fd7f329e049738</checksum>
+      <time file="1254756343" build="1254756304"/>
+      <size package="1603187" installed="5629002" archive="5681836"/>
+      <location href="rpm/i586/heartbeat-2.1.4-0.16.2.i586.rpm"/>
+      <format>
+        <rpm:requires>
+          <rpm:entry kind="package" name="heartbeat" epoch="0" ver="2.1.4" rel="0.16.2" flags="GE"/>
+        </rpm:requires>
+        <suse:freshens>
+          <suse:entry kind="package" name="heartbeat"/>
+        </suse:freshens>
+      </format>
+      <pkgfiles xmlns="http://novell.com/package/metadata/suse/patch">
+        <deltarpm>
+          <location href="rpm/i586/heartbeat-2.1.4-0.15.3_0.16.2.i586.delta.rpm"/>
+          <checksum type="sha">24d082363aedaf753a2aad916134337ccc77f310</checksum>
+          <time file="1254921191" build="1254756304"/>
+          <size package="413745" archive="0"/>
+          <base-version epoch="0" ver="2.1.4" rel="0.15.3" md5sum="5b6ab78cf19d1fff68e9cc4f305f7efc" buildtime="1253112332" sequence_info="heartbeat-2.1.4-0.15.3-4cfb6eab86cc8c456e7255da499ad586a4111cd7"/>
+        </deltarpm>
+      </pkgfiles>
+    </package>
+    <package xmlns="http://linux.duke.edu/metadata/common" type="rpm">
+      <name>heartbeat-cmpi</name>
+      <arch>i586</arch>
+      <version epoch="0" ver="2.1.4" rel="0.16.2"/>
+      <checksum type="sha" pkgid="YES">8c748f160e2e3cf5c6e64d22e894ffb7442df13b</checksum>
+      <time file="1254756343" build="1254756304"/>
+      <size package="142243" installed="311635" archive="326936"/>
+      <location href="rpm/i586/heartbeat-cmpi-2.1.4-0.16.2.i586.rpm"/>
+      <format>
+        <rpm:requires>
+          <rpm:entry kind="package" name="heartbeat-cmpi" epoch="0" ver="2.1.4" rel="0.16.2" flags="GE"/>
+        </rpm:requires>
+        <suse:freshens>
+          <suse:entry kind="package" name="heartbeat-cmpi"/>
+        </suse:freshens>
+      </format>
+      <pkgfiles xmlns="http://novell.com/package/metadata/suse/patch">
+        <deltarpm>
+          <location href="rpm/i586/heartbeat-cmpi-2.1.4-0.15.3_0.16.2.i586.delta.rpm"/>
+          <checksum type="sha">4533c0105e5ec257ad3667962182c9bd67f6e4b2</checksum>
+          <time file="1254921192" build="1254756304"/>
+          <size package="82559" archive="0"/>
+          <base-version epoch="0" ver="2.1.4" rel="0.15.3" md5sum="60e0fc86b3e8c38269aaf902ae16af0d" buildtime="1253112332" sequence_info="heartbeat-cmpi-2.1.4-0.15.3-12355f91ca48231347b00f6b713bb1dfb910"/>
+        </deltarpm>
+      </pkgfiles>
+    </package>
+    <package xmlns="http://linux.duke.edu/metadata/common" type="rpm">
+      <name>heartbeat-ldirectord</name>
+      <arch>i586</arch>
+      <version epoch="0" ver="2.1.4" rel="0.16.2"/>
+      <checksum type="sha" pkgid="YES">11b7a7805630e8ad6e4a44dacdaa7ce5d27cc5d6</checksum>
+      <time file="1254756344" build="1254756304"/>
+      <size package="113077" installed="170764" archive="172432"/>
+      <location href="rpm/i586/heartbeat-ldirectord-2.1.4-0.16.2.i586.rpm"/>
+      <format>
+        <rpm:requires>
+          <rpm:entry kind="package" name="heartbeat-ldirectord" epoch="0" ver="2.1.4" rel="0.16.2" flags="GE"/>
+        </rpm:requires>
+        <suse:freshens>
+          <suse:entry kind="package" name="heartbeat-ldirectord"/>
+        </suse:freshens>
+      </format>
+      <pkgfiles xmlns="http://novell.com/package/metadata/suse/patch">
+        <deltarpm>
+          <location href="rpm/i586/heartbeat-ldirectord-2.1.4-0.15.3_0.16.2.i586.delta.rpm"/>
+          <checksum type="sha">05981d16f8777ed4e7e7b3818342d6b1dd365688</checksum>
+          <time file="1254921193" build="1254756304"/>
+          <size package="79881" archive="0"/>
+          <base-version epoch="0" ver="2.1.4" rel="0.15.3" md5sum="da23e890f1825fba77cb3cb9445e4640" buildtime="1253112332" sequence_info="heartbeat-ldirectord-2.1.4-0.15.3-1f4434aada05e45cae889e930306e54c213310"/>
+        </deltarpm>
+      </pkgfiles>
+    </package>
+    <package xmlns="http://linux.duke.edu/metadata/common" type="rpm">
+      <name>heartbeat-pils</name>
+      <arch>i586</arch>
+      <version epoch="0" ver="2.1.4" rel="0.16.2"/>
+      <checksum type="sha" pkgid="YES">bbfdce684cbedea0e56419a0fcbce3f247d78288</checksum>
+      <time file="1254756344" build="1254756304"/>
+      <size package="83676" installed="58963" archive="60428"/>
+      <location href="rpm/i586/heartbeat-pils-2.1.4-0.16.2.i586.rpm"/>
+      <format>
+        <rpm:requires>
+          <rpm:entry kind="package" name="heartbeat-pils" epoch="0" ver="2.1.4" rel="0.16.2" flags="GE"/>
+        </rpm:requires>
+        <suse:freshens>
+          <suse:entry kind="package" name="heartbeat-pils"/>
+        </suse:freshens>
+      </format>
+      <pkgfiles xmlns="http://novell.com/package/metadata/suse/patch">
+        <deltarpm>
+          <location href="rpm/i586/heartbeat-pils-2.1.4-0.15.3_0.16.2.i586.delta.rpm"/>
+          <checksum type="sha">637867d89ed3b0ea2b2d6c2deb3a4c6e028411d3</checksum>
+          <time file="1254921193" build="1254756304"/>
+          <size package="71017" archive="0"/>
+          <base-version epoch="0" ver="2.1.4" rel="0.15.3" md5sum="5389b659bb733ca4d6c187753357def4" buildtime="1253112332" sequence_info="heartbeat-pils-2.1.4-0.15.3-42dc19c0ee393d8ce39722c3afa32eb770"/>
+        </deltarpm>
+      </pkgfiles>
+    </package>
+    <package xmlns="http://linux.duke.edu/metadata/common" type="rpm">
+      <name>heartbeat-stonith</name>
+      <arch>i586</arch>
+      <version epoch="0" ver="2.1.4" rel="0.16.2"/>
+      <checksum type="sha" pkgid="YES">94c14b4373437fe1852a885f232effa65839e3ac</checksum>
+      <time file="1254756344" build="1254756304"/>
+      <size package="176117" installed="386101" archive="393152"/>
+      <location href="rpm/i586/heartbeat-stonith-2.1.4-0.16.2.i586.rpm"/>
+      <format>
+        <rpm:requires>
+          <rpm:entry kind="package" name="heartbeat-stonith" epoch="0" ver="2.1.4" rel="0.16.2" flags="GE"/>
+        </rpm:requires>
+        <suse:freshens>
+          <suse:entry kind="package" name="heartbeat-stonith"/>
+        </suse:freshens>
+      </format>
+      <pkgfiles xmlns="http://novell.com/package/metadata/suse/patch">
+        <deltarpm>
+          <location href="rpm/i586/heartbeat-stonith-2.1.4-0.15.3_0.16.2.i586.delta.rpm"/>
+          <checksum type="sha">ea0c62d1ce00e87a8d86b543a013e861a70133cf</checksum>
+          <time file="1254921195" build="1254756304"/>
+          <size package="89655" archive="0"/>
+          <base-version epoch="0" ver="2.1.4" rel="0.15.3" md5sum="57b901f31f7085409c00bc13b5681bb8" buildtime="1253112332" sequence_info="heartbeat-stonith-2.1.4-0.15.3-ca21d9a82b20eca58198ef23b72c5eb99522"/>
+        </deltarpm>
+      </pkgfiles>
+    </package>
+  </atoms>
+</patch>

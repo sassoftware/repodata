@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<patches xmlns="http://novell.com/package/metadata/suse/patches">
+  <patch id="sdkp3-ecj-6559">
+    <checksum type="sha">f36fcfad402a0e8d59490ad8ae9c12da3503afb1</checksum>
+    <location href="repodata/patch-sdkp3-ecj-6559.xml"/>
+  </patch>
+  <patch id="sdkp3-heartbeat-6520">
+    <checksum type="sha">a9f1d8e60bb12a0be7837bc71eef6fae5d3ce27b</checksum>
+    <location href="repodata/patch-sdkp3-heartbeat-6520.xml"/>
+  </patch>
+</patches>

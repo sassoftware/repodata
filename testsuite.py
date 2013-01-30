@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #
 # Copyright (c) SAS Institute Inc.
 #
@@ -15,21 +16,18 @@
 #
 
 
-SUBDIRS = repomd
+import sys
 
-python_files =  $(wildcard *.py)
+from testrunner import suite, testhandler
 
-dist_files = Makefile $(python_files)
+class Suite(suite.TestSuite):
+    # Boilerplate. We need these values saved in the caller module
+    testsuite_module = sys.modules[__name__]
+    suiteClass = testhandler.ConaryTestSuite
 
-all: default-all subdirs
+_s = Suite()
+setup = _s.setup
+main = _s.main
 
-install: all pyfiles-install default-install pyfiles-compile install-subdirs
-
-subdirs: default-subdirs
-
-dist: default-dist
-
-clean: default-clean clean-subdirs
-
-include ../Make.rules
-include ../Make.defs
+if __name__ == '__main__':
+    _s.run()
