@@ -20,9 +20,8 @@ class Repodata(PackageRecipe):
     version = ''
 
     buildRequires = [
-        'make:runtime',
-        'python:devel',
-        'util-linux:runtime', # Needed by arch (in Make.defs)
+        'make',
+        'python-devel',
         'rpath-xmllib:python',
     ]
 
